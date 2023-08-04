@@ -1,6 +1,15 @@
-<script setup lang="ts">
+<script lang="ts">
+import { preFetch } from 'quasar/wrappers'
 import { useUsers } from 'stores/users.store'
 
+export default {
+  preFetch: preFetch(({ store, currentRoute }) => {
+    return useUsers(store).fetchOne(String(currentRoute.params.id))
+  })
+}
+</script>
+
+<script setup lang="ts">
 const usersStore = useUsers()
 </script>
 
