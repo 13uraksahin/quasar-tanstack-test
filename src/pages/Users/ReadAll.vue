@@ -1,16 +1,16 @@
+<script lang="ts">
+import { preFetch } from 'quasar/wrappers'
+import { useUsers } from 'stores/users.store'
+
+export default {
+  preFetch: preFetch(({ store }) => {
+    return useUsers(store).fetchAll()
+  })
+}
+</script>
+
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useQuery } from '@tanstack/vue-query'
-import axios from 'axios'
-
-const { data } = useQuery({
-  queryKey: ['users'],
-  queryFn: async () => await axios.get('http://localhost:3000/users')
-})
-
-onMounted(() => {
-  console.log('client - data: ', data)
-})
+const usersStore = useUsers()
 </script>
 
 <template>
@@ -19,8 +19,8 @@ onMounted(() => {
       <q-btn square unelevated icon="add" color="positive" class="full-width" :to="{ name: 'UsersCreateUnique' }" />
     </q-page-sticky>
 
-    <q-list style="padding-top: 100px;">
-      <q-item v-for="user in data" :key="user.id">
+    <q-list style="padding-top: 36px;">
+      <q-item v-for="user in usersStore.data" :key="user.id" :to="{ name: 'UsersUpdateUnique', params: { id: user.id } }">
         <q-item-section>
           <q-item-label>{{ user.name }}</q-item-label>
         </q-item-section>

@@ -1,23 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import axios from 'axios'
+import { useUsers } from 'stores/users.store'
 
-const name = ref('')
-const email = ref('')
+const usersStore = useUsers()
 
-const submit = () => {
-  axios.post('http://localhost:3000/users', {
-    name: name.value,
-    email: email.value
-  })
-}
+usersStore.cleanSelected()
 </script>
 
 <template>
   <q-page>
-    <q-form @submit="submit">
-      <q-input v-model="name" label="Name" />
-      <q-input v-model="email" label="Email" />
+    <q-form @submit="usersStore.create">
+      <q-input v-model="usersStore.mutateName" label="Name" />
+      <q-input v-model="usersStore.mutateEmail" label="Email" />
       <q-btn type="submit" label="Submit" />
     </q-form>
   </q-page>
